@@ -1,0 +1,66 @@
+import subprocess
+import random
+import csv
+import os
+
+# Configuration
+NUM_IMAGES = 1000
+OUTPUT_DIR = "training_data"
+RAW_DIR = os.path.join(OUTPUT_DIR, "raw")
+ANNOTATED_DIR = os.path.join(OUTPUT_DIR, "annotated")
+LOST_PATH = "./lost"
+
+# Create output directories if they don't exist
+for directory in [OUTPUT_DIR, RAW_DIR, ANNOTATED_DIR]:
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+# Prepare CSV to store Ground Truth
+with open(os.path.join(OUTPUT_DIR, "metadata.csv"), "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow(["filename", "ra", "dec", "roll"])
+
+    for i in range(NUM_IMAGES):
+        # 1. Randomize Inputs
+        ra = round(random.uniform(0, 360), 4)
+        dec = round(random.uniform(-90, 90), 4)
+        roll = round(random.uniform(0, 360), 4)
+        
+        # 2. Setup File Paths
+        base_name = f"star_field_{i:04d}.png"
+        raw_filepath = os.path.join(RAW_DIR, base_name)
+        annotated_filepath = os.path.join(ANNOTATED_DIR, f"annotated_{base_name}")
+
+        # 3. Construct the Command
+        cmd = [
+            LOST_PATH, "pipeline",
+            "--generate", "1",
+            "--generate-x-resolution", "3008",
+            "--generate-y-resolution", "3008",
+            "--fov", "16.4",
+            "--generate-ra", str(ra),
+            "--generate-de", str(dec),
+            "--generate-roll", str(roll),
+	        "--generate-exposure", "10", #Exposure in seconds? Maybe...
+            "--generate-spread-stddev", "1.5",
+            "--generate-read-noise-stddev", "0.000",
+            "--plot-raw-input", raw_filepath,
+            "--plot-input", annotated_filepath  # Added annotation flag
+        ]
+
+        # 4. Execute LOST
+        print(f"[{i+1}/{NUM_IMAGES}] Generating RA:{ra:7.2f}, DEC:{dec:7.2f}...")
+        
+        my_env = os.environ.copy()
+        my_env["ASAN_OPTIONS"] = "detect_leaks=0"
+        
+        try:
+            subprocess.run(cmd, env=my_env, check=True, capture_output=True)
+            # 5. Save Metadata
+            writer.writerow([base_name, ra, dec, roll])
+        except subprocess.CalledProcessError as e:
+            print(f"Error generating {base_name}: {e.stderr.decode()}")
+
+print(f"\nDone! Generated {NUM_IMAGES} image pairs.")
+print(f"Raw images for AI: {RAW_DIR}")
+print(f"Annotated images for verification: {ANNOTATED_DIR}")
