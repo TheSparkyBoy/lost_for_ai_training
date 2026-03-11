@@ -82,7 +82,8 @@ def generate_single_image_VST_68M(index):
     dec = round(random.uniform(-90, 90), 4)
     roll = round(random.uniform(0, 360), 4)
     
-    raw_filepath = os.path.join(RAW_DIR, f"star_field_{index:04d}.png")
+    base_name = f"star_field_{index:04d}.png"
+    raw_filepath = os.path.join(RAW_DIR, base_name)
     annotated_filepath = os.path.join(os.path.join(OUTPUT_DIR_VST_68M, "annotated"), f"star_field_{index:04d}_annotated.png")
 
     cmd = [
@@ -132,7 +133,8 @@ def generate_single_image_VST_41M(index):
     dec = round(random.uniform(-90, 90), 4)
     roll = round(random.uniform(0, 360), 4)
     
-    raw_filepath = os.path.join(RAW_DIR, f"star_field_{index:04d}.png")
+    base_name = f"star_field_{index:04d}.png"
+    raw_filepath = os.path.join(RAW_DIR, base_name)
     annotated_filepath = os.path.join(os.path.join(OUTPUT_DIR_VST_41M, "annotated"), f"star_field_{index:04d}_annotated.png")
 
     cmd = [
@@ -182,7 +184,8 @@ def generate_single_image_T3(index):
     dec = round(random.uniform(-90, 90), 4)
     roll = round(random.uniform(0, 360), 4)
     
-    raw_filepath = os.path.join(RAW_DIR, f"star_field_{index:04d}.png")
+    base_name = f"star_field_{index:04d}.png"
+    raw_filepath = os.path.join(RAW_DIR, base_name)
     annotated_filepath = os.path.join(os.path.join(OUTPUT_DIR_T3, "annotated"), f"star_field_{index:04d}_annotated.png")
 
     cmd = [
@@ -232,7 +235,8 @@ def generate_single_image_APS(index):
     dec = round(random.uniform(-90, 90), 4)
     roll = round(random.uniform(0, 360), 4)
     
-    raw_filepath = os.path.join(RAW_DIR, f"star_field_{index:04d}.png")
+    base_name = f"star_field_{index:04d}.png"
+    raw_filepath = os.path.join(RAW_DIR, base_name)
     annotated_filepath = os.path.join(os.path.join(OUTPUT_DIR_APS, "annotated"), f"star_field_{index:04d}_annotated.png")
 
     cmd = [
@@ -282,7 +286,8 @@ def generate_single_image_CT_2020(index):
     dec = round(random.uniform(-90, 90), 4)
     roll = round(random.uniform(0, 360), 4)
     
-    raw_filepath = os.path.join(RAW_DIR, f"star_field_{index:04d}.png")
+    base_name = f"star_field_{index:04d}.png"
+    raw_filepath = os.path.join(RAW_DIR, base_name)
     annotated_filepath = os.path.join(os.path.join(OUTPUT_DIR_CT_2020, "annotated"), f"star_field_{index:04d}_annotated.png")
 
     cmd = [
