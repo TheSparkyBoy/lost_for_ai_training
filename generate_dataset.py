@@ -5,23 +5,37 @@ import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # --- Configuration ---
-NUM_IMAGES = 10     # The total number of images you want to generate
+NUM_IMAGES = 10     
 OUTPUT_DIR = "training_data"
+
+# Default directories
+RAW_DIR = os.path.join(OUTPUT_DIR, "raw")
+ANNOTATED_DIR = os.path.join(OUTPUT_DIR, "annotated")
+
+# Camera-specific main directories
 OUTPUT_DIR_VST_68M = os.path.join(OUTPUT_DIR, "training_data_VST_68M")
 OUTPUT_DIR_VST_41M = os.path.join(OUTPUT_DIR, "training_data_VST_41M")
 OUTPUT_DIR_T3 = os.path.join(OUTPUT_DIR, "training_data_T3")
 OUTPUT_DIR_APS = os.path.join(OUTPUT_DIR, "training_data_APS")
 OUTPUT_DIR_CT_2020 = os.path.join(OUTPUT_DIR, "training_data_CT_2020")
 
-RAW_DIR = os.path.join(OUTPUT_DIR, "raw")
-ANNOTATED_DIR = os.path.join(OUTPUT_DIR, "annotated")
-LOST_PATH = "./lost"  # Ensure this is the newly compiled ARM64 binary!
-PI_CORES = 4          # The Raspberry Pi 5 has a quad-core CPU
+# Group all the camera-specific directories into a list
+camera_dirs = [
+    OUTPUT_DIR_VST_68M, 
+    OUTPUT_DIR_VST_41M, 
+    OUTPUT_DIR_T3, 
+    OUTPUT_DIR_APS, 
+    OUTPUT_DIR_CT_2020
+]
 
-# Create output directories
-for directory in [OUTPUT_DIR, RAW_DIR, ANNOTATED_DIR, OUTPUT_DIR_VST_68M, OUTPUT_DIR_VST_41M, OUTPUT_DIR_T3, OUTPUT_DIR_APS, OUTPUT_DIR_CT_2020]:
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+# 1. Create the default raw/annotated folders
+os.makedirs(RAW_DIR, exist_ok=True)
+os.makedirs(ANNOTATED_DIR, exist_ok=True)
+
+# 2. Loop through the cameras and create their nested folders
+for cam_dir in camera_dirs:
+    os.makedirs(os.path.join(cam_dir, "raw"), exist_ok=True)
+    os.makedirs(os.path.join(cam_dir, "annotated"), exist_ok=True)
 
 def generate_single_image_default(index):
     """Worker function to generate one image. Designed to run on a single CPU core."""
@@ -83,7 +97,7 @@ def generate_single_image_VST_68M(index):
     roll = round(random.uniform(0, 360), 4)
     
     base_name = f"star_field_{index:04d}.png"
-    raw_filepath = os.path.join(RAW_DIR, base_name)
+    raw_filepath = os.path.join(OUTPUT_DIR_VST_68M, "raw", base_name)
     annotated_filepath = os.path.join(os.path.join(OUTPUT_DIR_VST_68M, "annotated"), f"star_field_{index:04d}_annotated.png")
 
     cmd = [
@@ -134,7 +148,7 @@ def generate_single_image_VST_41M(index):
     roll = round(random.uniform(0, 360), 4)
     
     base_name = f"star_field_{index:04d}.png"
-    raw_filepath = os.path.join(RAW_DIR, base_name)
+    raw_filepath = os.path.join(OUTPUT_DIR_VST_41M, "raw", base_name)
     annotated_filepath = os.path.join(os.path.join(OUTPUT_DIR_VST_41M, "annotated"), f"star_field_{index:04d}_annotated.png")
 
     cmd = [
@@ -185,7 +199,7 @@ def generate_single_image_T3(index):
     roll = round(random.uniform(0, 360), 4)
     
     base_name = f"star_field_{index:04d}.png"
-    raw_filepath = os.path.join(RAW_DIR, base_name)
+    raw_filepath = os.path.join(OUTPUT_DIR_T3, "raw", base_name)
     annotated_filepath = os.path.join(os.path.join(OUTPUT_DIR_T3, "annotated"), f"star_field_{index:04d}_annotated.png")
 
     cmd = [
@@ -236,7 +250,7 @@ def generate_single_image_APS(index):
     roll = round(random.uniform(0, 360), 4)
     
     base_name = f"star_field_{index:04d}.png"
-    raw_filepath = os.path.join(RAW_DIR, base_name)
+    raw_filepath = os.path.join(OUTPUT_DIR_APS, "raw", base_name)
     annotated_filepath = os.path.join(os.path.join(OUTPUT_DIR_APS, "annotated"), f"star_field_{index:04d}_annotated.png")
 
     cmd = [
@@ -287,7 +301,7 @@ def generate_single_image_CT_2020(index):
     roll = round(random.uniform(0, 360), 4)
     
     base_name = f"star_field_{index:04d}.png"
-    raw_filepath = os.path.join(RAW_DIR, base_name)
+    raw_filepath = os.path.join(OUTPUT_DIR_CT_2020, "raw", base_name)
     annotated_filepath = os.path.join(os.path.join(OUTPUT_DIR_CT_2020, "annotated"), f"star_field_{index:04d}_annotated.png")
 
     cmd = [
@@ -372,6 +386,8 @@ if __name__ == "__main__":
 
     print(f"\nDone! Dataset generated in '{OUTPUT_DIR_VST_68M}'.")
 
+    print(f"Starting generation (VECTRONIC VST-41M) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
+
         # Prepare CSV and execute parallel generation VST-41M
     with open(os.path.join(OUTPUT_DIR_VST_41M, "metadata_vst41m.csv"), "w", newline="") as f:
         writer = csv.writer(f)
@@ -389,6 +405,8 @@ if __name__ == "__main__":
                     writer.writerow(result)
 
     print(f"\nDone! Dataset generated in '{OUTPUT_DIR_VST_41M}'.")
+
+    print(f"Starting generation (Terma T3 Star Tracker) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
 
             # Prepare CSV and execute parallel generation T3
     with open(os.path.join(OUTPUT_DIR_T3, "metadata_t3.csv"), "w", newline="") as f:
@@ -408,6 +426,8 @@ if __name__ == "__main__":
 
     print(f"\nDone! Dataset generated in '{OUTPUT_DIR_T3}'.")
 
+    print(f"Starting generation (Jena-Optronik ASTRO APS) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
+
         # Prepare CSV and execute parallel generation APS
     with open(os.path.join(OUTPUT_DIR_APS, "metadata_aps.csv"), "w", newline="") as f:
         writer = csv.writer(f)
@@ -425,6 +445,8 @@ if __name__ == "__main__":
                     writer.writerow(result)
 
     print(f"\nDone! Dataset generated in '{OUTPUT_DIR_APS}'.")
+
+    print(f"Starting generation (BAE Systems CT-2020) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
 
         # Prepare CSV and execute parallel generation CT-2020
     with open(os.path.join(OUTPUT_DIR_CT_2020, "metadata_ct2020.csv"), "w", newline="") as f:
