@@ -376,7 +376,7 @@ if __name__ == "__main__":
 
     print(f"\nDone! Dataset generated in '{RAW_DIR}'.")
     
-    print(f"Starting generation (VECTRONIC VST-68M) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
+    print(f"\nStarting generation (VECTRONIC VST-68M) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
     
     # Prepare CSV and execute parallel generation VST-68M
     with open(os.path.join(OUTPUT_DIR_VST_68M, "metadata_vst68m.csv"), "w", newline="") as f:
@@ -396,7 +396,7 @@ if __name__ == "__main__":
 
     print(f"\nDone! Dataset generated in '{OUTPUT_DIR_VST_68M}'.")
 
-    print(f"Starting generation (VECTRONIC VST-41M) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
+    print(f"\nStarting generation (VECTRONIC VST-41M) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
 
         # Prepare CSV and execute parallel generation VST-41M
     with open(os.path.join(OUTPUT_DIR_VST_41M, "metadata_vst41m.csv"), "w", newline="") as f:
@@ -416,7 +416,7 @@ if __name__ == "__main__":
 
     print(f"\nDone! Dataset generated in '{OUTPUT_DIR_VST_41M}'.")
 
-    print(f"Starting generation (Terma T3 Star Tracker) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
+    print(f"\nStarting generation (Terma T3 Star Tracker) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
 
             # Prepare CSV and execute parallel generation T3
     with open(os.path.join(OUTPUT_DIR_T3, "metadata_t3.csv"), "w", newline="") as f:
@@ -436,7 +436,7 @@ if __name__ == "__main__":
 
     print(f"\nDone! Dataset generated in '{OUTPUT_DIR_T3}'.")
 
-    print(f"Starting generation (Jena-Optronik ASTRO APS) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
+    print(f"\nStarting generation (Jena-Optronik ASTRO APS) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
 
         # Prepare CSV and execute parallel generation APS
     with open(os.path.join(OUTPUT_DIR_APS, "metadata_aps.csv"), "w", newline="") as f:
@@ -456,7 +456,7 @@ if __name__ == "__main__":
 
     print(f"\nDone! Dataset generated in '{OUTPUT_DIR_APS}'.")
 
-    print(f"Starting generation (BAE Systems CT-2020) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
+    print(f"\nStarting generation (BAE Systems CT-2020) of {NUM_IMAGES} images across {PI_CORES} Pi cores...")
 
         # Prepare CSV and execute parallel generation CT-2020
     with open(os.path.join(OUTPUT_DIR_CT_2020, "metadata_ct2020.csv"), "w", newline="") as f:
