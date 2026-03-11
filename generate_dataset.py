@@ -24,8 +24,9 @@ def generate_single_image(index):
     roll = round(random.uniform(0, 360), 4)
     
     base_name = f"star_field_{index:04d}.png"
+    annotated_name = f"star_field_{index:04d}_annotated.png"
     raw_filepath = os.path.join(RAW_DIR, base_name)
-    annotated_filepath = os.path.join(OUTPUT_DIR, base_name)
+    annotated_filepath = os.path.join(ANNOTATED_DIR, annotated_name)
 
 
     cmd = [
