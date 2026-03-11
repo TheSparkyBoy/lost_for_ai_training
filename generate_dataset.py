@@ -1,7 +1,9 @@
+import shutil
 import subprocess
 import random
 import csv
 import os
+import shutil
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # --- Configuration ---
@@ -29,6 +31,12 @@ camera_dirs = [
     OUTPUT_DIR_APS, 
     OUTPUT_DIR_CT_2020
 ]
+
+# --- CLEANUP STEP ---
+# Check if the main folder already exists. If it does, obliterate it and everything inside.
+if os.path.exists(OUTPUT_DIR):
+    print(f"Clearing old dataset from '{OUTPUT_DIR}'...")
+    shutil.rmtree(OUTPUT_DIR)
 
 # 1. Create the default raw/annotated folders
 os.makedirs(RAW_DIR, exist_ok=True)
