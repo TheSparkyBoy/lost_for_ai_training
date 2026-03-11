@@ -7,7 +7,7 @@ import shutil
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # --- Configuration ---
-NUM_IMAGES = 10     
+NUM_IMAGES = 1000     
 PI_CORES = 4        # Adjust based on your Pi's capabilities
 LOST_PATH = "./lost"  # Path to the compiled C++ executable
 OUTPUT_DIR = "training_data"
